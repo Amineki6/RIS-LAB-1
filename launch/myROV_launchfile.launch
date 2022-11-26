@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<launch>
+    <!--Locate the design-->
+    <param name = "robot_description" command = "cat '/home/amine/catkin_ws/src/uuv_simulator/urdf/myROV.urdf'" />
+
+    <!--Launch the empty underwater world -->	
+    <include file="$(find uuv_gazebo_worlds)/launch/empty_underwater_world.launch">
+    </include>
+    <!--Node to spawn the rov-->
+    <node name = "spawn_rov" pkg = "gazebo_ros" type = "spawn_model" output = "screen"
+        args = "-urdf -param robot_description -model rov -y 1" />
+    <!--Node to control rov using keyboard-->
+    <node pkg = "teleop_ft" type = "teleop_keyboard_forcestorques4.py" name = "teleop_keyboard_forcestorques4"/>
+    <!--Node to publish thrust commands, I did not manage to write the node so it runs with a warning!-->
+    <node pkg = "teleop_ft" type = "thrustCom.py" name = "thrustCom"/>
+</launch>
